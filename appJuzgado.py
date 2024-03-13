@@ -1654,20 +1654,23 @@ class JuzgadoBase:
     #fnRetornarElementoTabla
     
     def fnRetornarRadicadoLimpio( self, radicado_web ):
-        wdato_limpio = str(radicado_web).replace('/','').lower().replace('auto.pdf','')
-        wdato_limpio = str(wdato_limpio).replace('consulte aquí la providencia del proceso','').replace('auto proceso','').strip()
-        wdato_limpio = str(wdato_limpio).replace('ver providencias adjuntas','').replace(':','').strip() 
-        wdato_limpio = str(wdato_limpio).replace('automandamientodepago','').replace('autoniegamedidacautelar','').replace('autoniegaembargorequieredemandante','').replace('autocorretrasladodemandante','').strip() 
-        wdato_limpio = str(wdato_limpio).replace('autoliquidacioncostasponeconocimiento','').replace('agregamemorialsinconsideracion','').replace('autodecretamedidaordenacomision','').replace('autoliquidacioncostas','').strip()
-        wdato_limpio = str(wdato_limpio).replace('autoordenacomision','').replace('autoniegamedidacautelar','').replace('automandamientodepago','').replace('/','').strip() 
-        wdato_limpio = str(wdato_limpio).replace('sentencia.pdf','').replace('providencia','').strip()
-        wdato_limpio = str(wdato_limpio).replace('cd 1','').replace('cd 2','').replace('cd 3','').replace('cd 4','').strip()
-        wdato_limpio = str(wdato_limpio).replace('c 1','').replace('c 2','').replace('c 3','').replace('c 4','').strip()
-        wdato_limpio = str(wdato_limpio).replace('(ver)','').replace('ver','').strip()
-        wdato_limpio = str(wdato_limpio).replace('(1)','').replace('(2)','').replace('(3)','').replace('(4)','').strip()
-        wdato_limpio = str(wdato_limpio).replace('no. 1','').replace('no. 2','').replace('no. 3','').replace('no. 4','').strip()
         
-        return wdato_limpio
+        def secuencia(form: str, inf: int = 1, sup: int = 4):
+            return [form.format(num) for num in range(inf, sup + 1)]
+        
+        valores_a_reemplazar = {
+            "/", "auto.pdf"'consulte aquí la providencia del proceso', 'auto proceso', 'ver providencias adjuntas',
+            ':', 'automandamientodepago', 'autoniegamedidacautelar', 'autoniegaembargorequieredemandante',
+            'autocorretrasladodemandante', 'autoliquidacioncostasponeconocimiento', 'agregamemorialsinconsideracion',
+            'autodecretamedidaordenacomision', 'autoliquidacioncostas', 'autoordenacomision', 'autoniegamedidacautelar',
+            'automandamientodepago', '/', 'sentencia.pdf', 'providencia', *secuencia("cd {}"), *secuencia("c {}"),
+            '(ver)', 'ver', *secuencia("({})"), *secuencia("no. {}"), "rad"
+        }
+        
+        for valor in valores_a_reemplazar:
+            radicado_web = str(radicado_web).replace(valor, "").strip()
+        
+        return radicado_web
     #fnRetornarRadicadoLimpio
     
     ######## Procesos 

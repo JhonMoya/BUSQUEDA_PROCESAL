@@ -2,7 +2,7 @@
 # encoding: utf-8
 from appJuzgado import JuzgadoBase
 from appApiModel import ApiModel
- 
+from juzgadosParametros import procesos
 
 import time, os, sys
 from selenium.webdriver.common.by import By  
@@ -130,13 +130,8 @@ def fnProcesarDatos( driver, objDatos, app_apiModel, app_juzgado, app_general, a
                         else:
                             app_general.fnImprimir(f"Juzgado en mantenimiento revisar.",9)
                             continue
-                        #fin if  
-                        
-                        
-                        # if wCiuJuzgado not in (  'EE-6-20-387-287','EE-6-20-387-304','EE-6-20-387-306','EE-6-20-387-307','EE-6-20-387-700','EE-6-19-367-112','EE-6-19-367-113','EE-4-7-89-115','EE-6-20-398-116','EE-6-20-398-117','EE-6-20-398-118','EE-6-20-398-119','EE-6-19-367-110','EE-6-19-367-120','EE-6-19-371-131','EE-6-19-371-130','EE-6-19-371-132','EE-6-19-371-133','EE-6-19-371-134','EE-6-19-371-135','EE-6-19-371-136','EE-6-19-371-137','EE-6-19-371-138','EE-6-19-355-140','EE-6-19-355-141','EE-6-19-355-143','EE-6-19-355-144','EE-6-19-355-145','EE-6-19-355-150','EE-6-19-355-151','EE-6-19-355-152','EE-6-19-355-153','EE-6-19-355-154','EE-6-19-382-175','EE-6-19-382-177','EE-6-19-382-179','EE-6-19-382-181','EE-6-19-382-182','EE-6-19-382-184','EE-6-19-382-185','EE-6-19-382-187','EE-6-19-382-188','EE-6-20-387-290','EE-6-20-387-305','EE-4-7-78-352','EE-6-20-387-302','EE-4-7-78-348','EE-4-7-78-349','EE-4-7-78-360','EE-4-7-78-361','EE-4-7-78-362','EE-6-20-387-698','EE-4-7-78-321','EE-6-20-387-274','EE-7-24-498-266','EE-7-24-498-265','EE-7-24-498-89','EE-7-24-498-267','EE-7-24-498-90','EE-7-24-498-269','EE-7-24-498-270','EE-7-24-498-271','EE-7-24-498-272','EE-4-7-78-326','EE-4-7-78-94','EE-4-7-78-329','EE-4-7-78-96','EE-4-7-78-97','EE-7-24-498-258','EE-7-24-498-259','EE-7-24-498-260','EE-7-24-498-261','EE-7-24-498-262','EE-7-24-498-255','EE-7-24-498-256','EE-7-24-498-263','EE-7-24-498-264','EE-6-19-356-3','EE-7-24-498-273','EE-6-19-356-1','EE-6-19-356-8','EE-6-19-356-9','EE-6-19-356-10','EE-6-19-356-11','EE-6-19-356-18','EE-6-19-356-21','EE-6-19-356-28','EE-6-19-356-29','EE-6-19-356-30','EE-6-19-356-33','EE-6-19-356-34','EE-6-19-356-37','EE-6-19-356-38','EE-6-19-356-39','EE-6-19-356-40','EE-6-19-356-41','EE-6-19-356-42','EE-6-19-356-43','EE-6-19-356-44','EE-6-19-356-45','EE-6-19-356-46','EE-6-19-356-48','EE-6-19-356-49','EE-6-19-356-51','EE-6-19-356-56','EE-6-19-356-59','EE-6-19-356-62','EE-6-19-356-63','EE-6-19-356-64','EE-6-19-356-65','EE-6-19-356-68','EE-6-19-356-69','EE-6-19-356-70','EE-6-19-356-71','EE-6-19-356-72','EE-6-19-356-60','EE-6-20-387-310','EE-6-19-356-83','EE-6-20-387-312','EE-6-20-387-314','EE-6-20-387-315','EE-6-20-387-316','EE-4-7-78-323','EE-6-20-387-268','EE-4-7-78-355','EE-4-7-78-356','EE-4-7-78-347','EE-6-20-387-297','EE-4-7-78-344','EE-6-20-387-295','EE-4-7-78-345','EE-4-7-78-343','EE-6-20-387-291','EE-6-19-357-251','EE-6-19-357-252','EE-6-19-367-246','EE-6-19-367-247','EE-6-19-367-243','EE-6-19-367-241','EE-6-19-382-206','EE-6-19-380-160','EE-6-19-382-201','EE-6-19-382-180','EE-6-19-367-156','EE-6-19-367-126','EE-6-19-367-127','EE-6-19-367-128','EE-4-7-89-124','EE-4-7-89-125','EE-6-20-387-283','EE-6-20-387-108','EE-6-20-387-109','EE-6-19-356-86','EE-6-19-356-87','EE-6-19-356-78'  ):
-                        #     continue
-                        # #fin if
-                                                
+                        #fin if
+                                                    
                         # Proceso de Inicio 
                         driver, continuar = app_juzgado.fnProcesoPaginaInicio( driver, app_juzgado.datos_juzgados.juzgadosJSON.get(juzgado).url )
                         if continuar: continue
@@ -150,9 +145,24 @@ def fnProcesarDatos( driver, objDatos, app_apiModel, app_juzgado, app_general, a
                             continue
                         #fin fin 
                         
-                        ### PROCESO 01
-                        if wCiuJuzgado == 'EE-6-20-387-299':   # JUZGADO 035 DE PEQUEÑAS CAUSAS Y COMPETENCIA MÚLTIPLE DE BOGOTÁ
-                            app_juzgado.fnProcesos( 1, juzgado, ['td[2]', 'ESTADO-69-3|PROVIDENCIAS-01-4', 'td[1]', '/', 1, 0, True, True, 1 ], wSeleccionarMes, driver, datos, wMesDiv, wMes )
+                        juzgadoAProcesar = procesos.get(wCiuJuzgado)
+                        
+                        if juzgadoAProcesar is not None:
+                            datosProceso = juzgadoAProcesar[0]
+                            condicionesDeProceso = juzgadoAProcesar[1]
+                            tieneSeleccionadorMes = juzgadoAProcesar[2]
+                            cumpleCondiciones = all([condicion(datos) for condicion in condicionesDeProceso])
+                            if cumpleCondiciones:
+                                app_juzgado.fnProcesos(
+                                    datosProceso[0],
+                                    juzgado,
+                                    datosProceso[1],
+                                    wSeleccionarMes if tieneSeleccionadorMes is None else tieneSeleccionadorMes,
+                                    driver,
+                                    datos,
+                                    wMesDiv,
+                                    wMes
+                                )
                         
                         ### PROCESO 02
                         elif wCiuJuzgado == 'EE-4-7-78-327': # JUZGADO 012 CIVIL DEL CIRCUITO DE BOGOTÁ
