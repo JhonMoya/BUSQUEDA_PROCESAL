@@ -145,10 +145,20 @@ def fnProcesarDatos( driver, objDatos, app_apiModel, app_juzgado, app_general, a
                             continue
                         #fin fin 
                         
-                        juzgadoAProcesar = procesos.get(wCiuJuzgado)
+                        # Para obtener el juzgado se hace un filtrado de mes y año por si
+                        # el juzgado tiene distintos procesos específicos. Primero se obtiene
+                        # el juzgado por año y mes, si este no existe se busca el juzgado por año,
+                        # si este tampoco existe busca el proceso del juzgado simplemente con su id.
+                        juzgadoAnio = f"{wCiuJuzgado}:{datos['Anio']}" # EE-0-00-000-0000:2023
+                        juzgadoAnioMes = f"{wCiuJuzgado}:{datos['Anio']}:{datos['Mes']}" # EE-0-00-000-0000:2023:2
+                        juzgadoAProcesarGenerico = procesos.get(wCiuJuzgado) # EE-0-00-000-0000
+                        juzgadoAProcesarEspecifico = procesos.get(juzgadoAnio, juzgadoAProcesarGenerico)
+                        juzgadoAProcesar = procesos.get(juzgadoAnioMes, juzgadoAProcesarEspecifico)
                         
                         if juzgadoAProcesar is not None:
                             datosProceso = juzgadoAProcesar[0]
+                            if callable(datosProceso[1]):
+                                datosProceso[1] = datosProceso[1](datos)
                             condicionesDeProceso = juzgadoAProcesar[1]
                             tieneSeleccionadorMes = juzgadoAProcesar[2]
                             cumpleCondiciones = all([condicion(datos) for condicion in condicionesDeProceso])
@@ -182,7 +192,7 @@ def fnProcesarDatos( driver, objDatos, app_apiModel, app_juzgado, app_general, a
                         
                         ### PROCESO 06
                         elif wCiuJuzgado == 'EE-6-19-356-16': #JUZGADO 016 CIVIL MUNICIPAL DE BOGOTÁ
-                            app_juzgado.fnProcesos( 6, juzgado, ['td[3]', datos["NumeroRadicacion"],  -1, True,  ], False, driver, datos, wMesDiv, wMes )
+                            app_juzgado.fnProcesos( 6, juzgado, ['td[3]', datos["NumeroRadicacion"],  -1, True], False, driver, datos, wMesDiv, wMes )
                         
                         ### PROCESO 07
                         elif wCiuJuzgado == 'EE-4-7-78-335': # JUZGADO 021 CIVIL DEL CIRCUITO DE BOGOTÁ
